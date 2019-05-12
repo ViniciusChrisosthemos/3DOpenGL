@@ -7,7 +7,6 @@
 // Marcio Sarroglia Pinho
 // pinho@pucrs.br
 // **********************************************************************
-
 #include <iostream>
 #include <cmath>
 #include <ctime>
@@ -27,6 +26,16 @@ using namespace std;
 #include <GLUT/glut.h>
 #endif
 
+// **********************************************************************
+//
+// W - A - S - F movimentam o centro de projeção
+//
+// I - J - K - L movimentam o target
+//
+// Seta Cima e Baixo Rotaciona o observador
+//
+// **********************************************************************
+void DrawAxis();
 void DrawGround();
 void DrawWalls();
 void DrawObjects();
