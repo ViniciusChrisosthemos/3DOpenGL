@@ -264,10 +264,12 @@
 	<_mingw.h>
 	<stdlib.h>
 
-1557616478 source:c:\users\vinic\desktop\git\3dopengl\programabasico3d.cpp
+1557705573 source:c:\users\vinic\desktop\git\3dopengl\programabasico3d.cpp
 	<iostream>
 	<cmath>
 	<ctime>
+	<Camera.h>
+	<Vector3.h>
 	<windows.h>
 	"gl\glut.h"
 	<sys/time.h>
@@ -286,4 +288,16 @@
 	<GL/glu.h>
 
 1298986600 c:\users\vinic\desktop\git\3dopengl\include\gl\freeglut_ext.h
+
+1557707287 source:c:\users\vinic\desktop\git\3dopengl\src\vector3.cpp
+	"Vector3.h"
+
+1557703455 c:\users\vinic\desktop\git\3dopengl\include\vector3.h
+
+1557707679 source:c:\users\vinic\desktop\git\3dopengl\src\camera.cpp
+	"Camera.h"
+	<Vector3.h>
+
+1557704946 c:\users\vinic\desktop\git\3dopengl\include\camera.h
+	<Vector3.h>
 
