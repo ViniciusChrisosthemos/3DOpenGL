@@ -1,16 +1,18 @@
 #ifndef CAMERA_H
 #define CAMERA_H
-#include<Vector3.h>
+#include <Vector3.h>
+#include <Position.h>
 
 class Camera
 {
     public:
-        Vector3* position;
+        Position* position;
         Vector3* target;
         Vector3* direction;
-        float angle;
+        float speed;
 
-        Camera();
+        Camera(Position* _initPos);
+        void Move(float _dt);
         virtual ~Camera();
 
     protected:

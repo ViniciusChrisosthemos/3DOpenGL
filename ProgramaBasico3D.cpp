@@ -12,7 +12,9 @@
 #include <cmath>
 #include <ctime>
 #include <Camera.h>
-
+#include <Position.h>
+#include <Vector3.h>
+#define DEG 0.01745329251
 using namespace std;
 
 #ifdef WIN32
@@ -28,12 +30,68 @@ using namespace std;
 #include <GLUT/glut.h>
 #endif
 
+#define LIMIT_Y = 0.5
+
 void Move();
+void DrawScenario();
+void DrawRetangle();
 
 GLfloat AspectRatio, AngY=0;
-Camera* mainCamera = new Camera();
-float alfa = 0.1f;
-float limit_y = 0;
+Camera* mainCamera = new Camera(new Position(new Vector3(0,10,0),0.0f));
+Position* pos = new Position(new Vector3(0,1,0), 0);
+float alfa = 0.01f;
+float limit_y = 0.5;
+
+// **********************************************************************
+//  void DrawRetangle(float _size) (EM IMPLEMENTACAO)
+//  Desenha um retangulo de area=2_size*2_size. PIVO NO CENTRO!!!
+// **********************************************************************
+void DrawRetangle(float _size)
+{
+    glBegin(GL_QUADS);
+		glVertex3f(-_size, 0,  _size);
+		glVertex3f( _size, 0,  _size);
+		glVertex3f( _size, 0, -_size);
+		glVertex3f(-_size, 0, -_size);
+    glEnd();
+}
+
+// **********************************************************************
+//  void DrawScenario()
+//  Desenha todos os objetos presentes no cenario
+// **********************************************************************
+void DrawScenario()
+{
+    //Desenha chao
+    glPushMatrix();
+
+    glPopMatrix();
+}
+
+void MoveCube()
+{
+    if(GetKeyState('W') & 0x8000)
+    {
+        pos->coord->z += cos(pos->angle*DEG) * alfa;
+        pos->coord->x += sin(pos->angle*DEG) * alfa;
+    }
+
+    if(GetKeyState('S') & 0x8000)
+    {
+        pos->coord->z -= cos(pos->angle*DEG) * alfa;
+        pos->coord->x -= sin(pos->angle*DEG) * alfa;
+    }
+
+    if(GetKeyState('D') & 0x8000)
+    {
+        pos->angle -= alfa*15;
+    }
+
+    if(GetKeyState('A') & 0x8000)
+    {
+        pos->angle += alfa*15;
+    }
+}
 
 // **********************************************************************
 //  void Move()
@@ -43,48 +101,46 @@ void Move()
 {
     if(GetKeyState('W') & 0x8000)
     {
-        mainCamera->position->z += alfa;
-        mainCamera->target->z += alfa;
+        mainCamera->Move(alfa);
     }
 
     if(GetKeyState('S') & 0x8000)
     {
-        mainCamera->position->z -= alfa;
-        mainCamera->target->z -= alfa;
+        mainCamera->Move(alfa);
     }
 
     if(GetKeyState('A') & 0x8000)
     {
-        mainCamera->position->x += alfa;
+        mainCamera->position->coord->x += alfa;
         mainCamera->target->x += alfa;
     }
 
     if(GetKeyState('D') & 0x8000)
     {
-        mainCamera->position->x -= alfa;
+        mainCamera->position->coord->x -= alfa;
         mainCamera->target->x -= alfa;
     }
 
     if(GetKeyState('Q') & 0x8000)
     {
-        mainCamera->position->y += alfa;
+        mainCamera->position->coord->y += alfa;
         mainCamera->target->y += alfa;
 
-        if(mainCamera->position->y < limit_y || mainCamera->target->y < limit_y)
+        if(mainCamera->position->coord->y < limit_y || mainCamera->target->y < limit_y)
         {
-            mainCamera->position->y = limit_y;
+            mainCamera->position->coord->y = limit_y;
             mainCamera->target->y = limit_y;
         }
     }
 
     if(GetKeyState('E') & 0x8000)
     {
-        mainCamera->position->y -= alfa;
+        mainCamera->position->coord->y -= alfa;
         mainCamera->target->y -= alfa;
 
-        if(mainCamera->position->y < limit_y || mainCamera->target->y < limit_y)
+        if(mainCamera->position->coord->y < limit_y || mainCamera->target->y < limit_y)
         {
-            mainCamera->position->y = limit_y;
+            mainCamera->position->coord->y = limit_y;
             mainCamera->target->y = limit_y;
         }
     }
@@ -101,12 +157,12 @@ void Move()
 
     if(GetKeyState('J') & 0x8000)
     {
-        mainCamera->angle -= 3;
+        mainCamera->position->angle -= alfa*5;
     }
 
     if(GetKeyState('L') & 0x8000)
     {
-        mainCamera->angle += 3;
+        mainCamera->position->angle += alfa*5;
     }
 }
 
@@ -190,8 +246,8 @@ void PosicUser()
 
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
-	glRotated(mainCamera->angle,0,1,0);
-	gluLookAt(mainCamera->position->x, mainCamera->position->y, mainCamera->position->z,
+	glRotated(mainCamera->position->angle,0,1,0);
+	gluLookAt(mainCamera->position->coord->x, mainCamera->position->coord->y, mainCamera->position->coord->z,
 		      mainCamera->target->x,mainCamera->target->y,mainCamera->target->z,
 			  mainCamera->direction->x,mainCamera->direction->y,mainCamera->direction->z);
 
@@ -265,6 +321,12 @@ void DesenhaCubo()
 		glVertex3f(-1.0f,  1.0f, -1.0f);
 	glEnd();
 }
+
+void DrawExample()
+{
+
+}
+
 // **********************************************************************
 //  void display( void )
 //
@@ -279,24 +341,30 @@ void display( void )
 
 	PosicUser();
 
-	Move();
+	//Move();
+    MoveCube();
 
 	glMatrixMode(GL_MODELVIEW);
 
 	glPushMatrix();
-		glTranslatef ( 1.0f, 0.0f, 5.0f );
-        glRotatef(AngY,0,1,0);
+		glTranslatef ( pos->coord->x, pos->coord->y, pos->coord->z );
+        glRotatef(pos->angle,0,1,0);
 		glColor3f(0.5f,0.0f,0.0f); // Vermelho
 		DesenhaCubo();
 	glPopMatrix();
 
-
+    /*
 	glPushMatrix();
-		glTranslatef ( -1.0f, 2.0f, 8.0f );
+		glTranslatef ( -1.0f, 4.0f, 8.0f );
 		glRotatef(AngY,0,1,0);
 		glColor3f(0.0f,0.6f,0.0f); // Verde
 		DesenhaCubo();
 	glPopMatrix();
+	*/
+
+	glColor3f(0.0f, 1.0f, 0.0f);
+	DrawRetangle(25);
+
 
 	glutSwapBuffers();
 }
@@ -327,10 +395,11 @@ void animate()
     {
         cout << 1.0/dt << " FPS"<< endl;
         AccumTime = 0;
+        alfa = dt*2;
     }
     //cout << "AccumTime: " << AccumTime << endl;
     // Anima cubos
-    AngY++;
+    AngY += alfa;
     // Sa;va o tempo para o pr—ximo ciclo de rendering
     last_idle_time = time_now;
 
@@ -353,11 +422,41 @@ void keyboard ( unsigned char key, int x, int y )
     case 27:        // Termina o programa qdo
       exit ( 0 );   // a tecla ESC for pressionada
       break;
+      /*
+    case 'w':
+        mainCamera->Move(alfa);
+        cout << mainCamera->position->coord->x << " " << mainCamera->position->coord->y << " " << mainCamera->position->coord->z << "\n";
+        break;
+    case 's':
+        mainCamera->Move(-alfa);
+        cout << mainCamera->position->coord->x << " " << mainCamera->position->coord->y << " " << mainCamera->position->coord->z << "\n";
+        break;
 
+    case 'i':
+        mainCamera->target->y += abs(alfa);
+        break;
+    case 'k':
+        mainCamera->target->y -= abs(alfa);
+        break;
+    case 'j':
+        mainCamera->position->angle -= alfa*5;
+        break;
+    case 'l':
+        mainCamera->position->angle += alfa*5;
+        break;
+        */
+    case 'i':
+        mainCamera->target->y += abs(alfa);
+        break;
+    case 'k':
+        mainCamera->target->y -= abs(alfa);
+        break;
     default:
             cout << key;
       break;
   }
+
+    cout << "Angle = " << mainCamera->position->angle << "\n";
 }
 
 // **********************************************************************

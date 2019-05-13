@@ -301,3 +301,58 @@
 1557704946 c:\users\vinic\desktop\git\3dopengl\include\camera.h
 	<Vector3.h>
 
+1557755412 source:c:\users\17204102\desktop\3dopengl\programabasico3d.cpp
+	<iostream>
+	<cmath>
+	<ctime>
+	<Camera.h>
+	<Position.h>
+	<Vector3.h>
+	<windows.h>
+	"gl\glut.h"
+	<sys/time.h>
+	<GLUT/glut.h>
+
+1557754604 c:\users\17204102\desktop\3dopengl\include\camera.h
+	<Vector3.h>
+	<Position.h>
+
+1557751851 c:\users\17204102\desktop\3dopengl\include\vector3.h
+
+1557751851 c:\users\17204102\desktop\3dopengl\include\gl\glut.h
+	"freeglut.h"
+
+1557751851 c:\users\17204102\desktop\3dopengl\include\gl\freeglut.h
+	"freeglut_std.h"
+	"freeglut_ext.h"
+
+1557751851 c:\users\17204102\desktop\3dopengl\include\gl\freeglut_std.h
+	<windows.h>
+	<GL/gl.h>
+	<GL/glu.h>
+
+1557751851 c:\users\17204102\desktop\3dopengl\include\gl\freeglut_ext.h
+
+1557756027 source:c:\users\17204102\desktop\3dopengl\src\camera.cpp
+	"Camera.h"
+	<Vector3.h>
+	<Position.h>
+	<math.h>
+
+1557751851 source:c:\users\17204102\desktop\3dopengl\src\vector3.cpp
+	"Vector3.h"
+
+1557752565 source:c:\users\17204102\desktop\3dopengl\src\edge.cpp
+	"Edge.h"
+	<Vector3.h>
+
+1557752351 c:\users\17204102\desktop\3dopengl\include\edge.h
+	<Vector3.h>
+
+1557753948 source:c:\users\17204102\desktop\3dopengl\src\position.cpp
+	"Position.h"
+	<Vector3.h>
+
+1557753901 c:\users\17204102\desktop\3dopengl\include\position.h
+	<Vector3.h>
+
